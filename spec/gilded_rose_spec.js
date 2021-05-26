@@ -77,6 +77,23 @@ describe("GildedRose shop manager", function () {
     });
   })
 
+  it("Augmente la qualité par 1 quand il reste plus 10 jours pour Backstage passes", function () {
+    listItems.push(new Item("Backstage passes to a TAFKAL80ETC concert", 9, 30));
+    listItems.push(new Item("Backstage passes to a TAFKAL80ETC concert", 12, 30));
+
+    const gildedRose = new Shop(listItems);
+    const items = gildedRose.updateQuality();
+
+    var expected = [
+      { sellIn: 8, quality: 32 },
+      { sellIn: 11, quality: 31 },
+    ];
+    expected.forEach(function (testCase, idx) {
+      expect(items[idx].quality).toBe(testCase.quality);
+      expect(items[idx].sellIn).toBe(testCase.sellIn);
+    });
+  })
+
   it("Augmente la qualité par 2 quand il reste 10 jours ou moins pour Backstage passes", function () {
     listItems.push(new Item("Aged Brie", 9, 30));
     listItems.push(new Item("Backstage passes to a TAFKAL80ETC concert", 9, 30));
