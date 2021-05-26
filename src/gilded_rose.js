@@ -9,100 +9,102 @@ class Item {
     this.isQualityIncrease = false;
   }
 
-  getState() {
-    if (this.sellIn <= 0) {
-      this.isSellIn = false
-    }
-    if (this.name.includes("Sulfuras")) {
-      this.isLegendary = true
-      this.isSellIn = true
-    }
-
-    if (this.name.includes("Conjured")) {
-      this.isConjured = true
-    }
-
-    if (this.name.includes("Aged Brie") || this.name.includes("Backstage passes")) {
-      this.isQualityIncrease = true
-    }
-
-  }
-
-  getNewQualityItem() {
-    if (this.name.includes("Aged Brie")) {
-      this.quality++
-      this.sellIn--
-      if (this.quality > 50) {
-        this.quality = 50
-      }
-    }
-
-    if (this.name.includes("Backstage passes")) {
-      if (this.sellIn > 10) {
-        this.quality++
-        this.sellIn--
-        if (this.quality > 50) {
-          this.quality = 50
-        }
-      }
-
-      if (this.sellIn > 5 && this.sellIn <= 10) {
-        this.quality = this.quality + 2
-        this.sellIn--
-        if (this.quality > 50) {
-          this.quality = 50
-        }
-      }
-      if (this.sellIn <= 5) {
-        this.quality = this.quality + 3
-        this.sellIn--
-        if (this.quality > 50) {
-          this.quality = 50
-        }
-      }
-      if (this.sellIn <= 0) {
-        this.quality = 0
-      }
-    }
-
-    if (this.isLegendary) {
-      this.quality = 80
-      this.sellIn--
-    }
-    if (this.isConjured) {
-      this.quality = this.quality - 2
-      this.sellIn--
-      if (this.quality < 0) {
-        this.quality = 0
-      }
-    }
-    if (!this.isConjured && !this.isLegendary && !this.isQualityIncrease) {
-      if (this.isSellIn) {
-        this.quality--
-        this.sellIn--
-        if (this.quality < 0) {
-          this.quality = 0
-        }
-      }
-      if (!this.isSellIn) {
-        this.quality = this.quality - 2
-        this.sellIn--
-        if (this.quality < 0) {
-          this.quality = 0
-        }
-      }
-    }
-  }
 }
 
 class Shop {
   constructor(items = []) {
     this.items = items;
   }
+
+  getState(item) {
+    if (item.sellIn <= 0) {
+      item.isSellIn = false
+    }
+    if (item.name.includes("Sulfuras")) {
+      item.isLegendary = true
+      item.isSellIn = true
+    }
+
+    if (item.name.includes("Conjured")) {
+      item.isConjured = true
+    }
+
+    if (item.name.includes("Aged Brie") || item.name.includes("Backstage passes")) {
+      item.isQualityIncrease = true
+    }
+
+  }
+
+  getNewQualityItem(item) {
+    if (item.name.includes("Aged Brie")) {
+      item.quality++
+      item.sellIn--
+      if (item.quality > 50) {
+        item.quality = 50
+      }
+    }
+
+    if (item.name.includes("Backstage passes")) {
+      if (item.sellIn > 10) {
+        item.quality++
+        item.sellIn--
+        if (item.quality > 50) {
+          item.quality = 50
+        }
+      }
+
+      if (item.sellIn > 5 && item.sellIn <= 10) {
+        item.quality = item.quality + 2
+        item.sellIn--
+        if (item.quality > 50) {
+          item.quality = 50
+        }
+      }
+      if (item.sellIn <= 5) {
+        item.quality = item.quality + 3
+        item.sellIn--
+        if (item.quality > 50) {
+          item.quality = 50
+        }
+      }
+      if (item.sellIn <= 0) {
+        item.quality = 0
+      }
+    }
+
+    if (item.isLegendary) {
+      item.quality = 80
+      item.sellIn--
+    }
+    if (item.isConjured) {
+      item.quality = item.quality - 2
+      item.sellIn--
+      if (item.quality < 0) {
+        item.quality = 0
+      }
+    }
+    if (!item.isConjured && !item.isLegendary && !item.isQualityIncrease) {
+      if (item.isSellIn) {
+        item.quality--
+        item.sellIn--
+        if (item.quality < 0) {
+          item.quality = 0
+        }
+      }
+      if (!item.isSellIn) {
+        item.quality = item.quality - 2
+        item.sellIn--
+        if (item.quality < 0) {
+          item.quality = 0
+        }
+      }
+    }
+  }
+
   updateQuality() {
     this.items.forEach((item) => {
-      item.getState()
-      item.getNewQualityItem()
+      this.getState(item)
+      this.getNewQualityItem(item)
     })
 
     return this.items
@@ -113,9 +115,3 @@ module.exports = {
   Item,
   Shop
 }
-
-
-// const item = new Item(name = "aged Brie", sellIn = 0, quality = 48)
-// item.getState()
-// item.getNewQualityItem()
-// console.log(item)
